@@ -1,8 +1,5 @@
 package com.maven.tpEmailZasso.Controladora;
 
-import com.maven.tpEmailZasso.Login.SessionData;
-import com.maven.tpEmailZasso.Login.UserSesion;
-import com.maven.tpEmailZasso.Response.LoginResponseWrapper;
 import com.maven.tpEmailZasso.Servicio.ServiceUsuario;
 import com.maven.tpEmailZasso.Modelo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import java.util.List;
 public class controlaUsuarios {
 
     @Autowired
+    private
     ServiceUsuario serviceEmail;
 
     //TRAIGO TODOS LOS USUARIOS Y LOS MUESTRO
@@ -29,9 +27,8 @@ public class controlaUsuarios {
     public @ResponseBody
     ResponseEntity<List<Usuario>> getALL() {
 
-
         try {
-            List<Usuario> list = serviceEmail.getAll();
+            List<Usuario> list = getServiceEmail().getAll();
             if (list.size() > 0) {
                 return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
             } else {
@@ -49,7 +46,7 @@ public class controlaUsuarios {
     ResponseEntity<List<Usuario>> getUsuario(@PathVariable("nombre") String nombre) {
 
         try {
-            List<Usuario> list = serviceEmail.getUsuario(nombre);
+            List<Usuario> list = getServiceEmail().getUsuario(nombre);
             if (list.size() > 0) {
                 return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
             } else {
@@ -65,7 +62,7 @@ public class controlaUsuarios {
     @RequestMapping(value = "/Usuario/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addUser(@RequestBody Usuario request) {
         try {
-            serviceEmail.newUser(request.getNombre(), request.getApellido(), request.getDireccion(), request.getTelefono(), request.getCiudad(), request.getPais(), request.getProvincia(), request.getContrasenia(), request.getMail());
+            getServiceEmail().newUser(request.getNombre(), request.getApellido(), request.getDireccion(), request.getTelefono(), request.getCiudad(), request.getPais(), request.getProvincia(), request.getContrasenia(), request.getMail());
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -92,7 +89,7 @@ public class controlaUsuarios {
     @RequestMapping(value = "/Usuario/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE) //ELIMINA USUARIO (de manera logica) X ID
     public ResponseEntity delete(@PathVariable("id") int id) {
         try {
-            serviceEmail.deleteUser(id);
+            getServiceEmail().deleteUser(id);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,4 +98,11 @@ public class controlaUsuarios {
     }
 
 
+    public ServiceUsuario getServiceEmail() {
+        return serviceEmail;
+    }
+
+    public void setServiceEmail(ServiceUsuario serviceEmail) {
+        this.serviceEmail = serviceEmail;
+    }
 }

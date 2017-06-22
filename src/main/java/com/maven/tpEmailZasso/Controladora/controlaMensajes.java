@@ -22,20 +22,21 @@ import java.util.List;
 public class controlaMensajes {
 
     @Autowired
+    private
     ServiceMensaje serviceMensaje;
 
 
     //TRAIGO TODOS LOS MENSAJES Y LOS MUESTRO
     @RequestMapping(value = "/listar_todos_mensajes/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<List<MensajeWrapper>> getALLMessages() {
+    ResponseEntity<List<Mensaje>> getALLMessages() {
 
-        List<MensajeWrapper> list = serviceMensaje.allMessagesService();
+        List<Mensaje> list = getServiceMensaje().allMessagesService();
         try {
             if (list.size() > 0) {
-                return new ResponseEntity<List<MensajeWrapper>>(list, HttpStatus.OK);
+                return new ResponseEntity<List<Mensaje>>(list, HttpStatus.OK);
             } else {
-                return new ResponseEntity<List<MensajeWrapper>>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<List<Mensaje>>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,7 +48,7 @@ public class controlaMensajes {
     @RequestMapping(value = "/enviar_mail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity nuevoMensaje(@RequestBody MensajeRequest request) {
         try {
-            serviceMensaje.mandarMailService(request.getUserIdFrom(),request.getUserIdTo(),request.getRemitente(),request.getRecipiente(),request.getAsunto(),request.getCuerpo());
+            getServiceMensaje().mandarMailService(request.getUserIdFrom(),request.getUserIdTo(),request.getRemitente(),request.getRecipiente(),request.getAsunto(),request.getCuerpo());
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,73 +69,73 @@ public class controlaMensajes {
     //MENSAJES RECIBIDOS DE X USUARIO
     @RequestMapping(value = "/recibidos/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<List<MensajeWrapper>> mensajesRecibidosPor(@PathVariable("id") int id) {
-        List<Mensaje> listamails = serviceMensaje.msjRecibidosXusuarioService(id);
+    ResponseEntity<List<Mensaje>> mensajesRecibidosPor(@PathVariable("id") int id) {
+        List<Mensaje> listamails = getServiceMensaje().msjRecibidosXusuarioService(id);
         if (listamails.size() > 0) {
-            List<MensajeWrapper> lista = new ArrayList<MensajeWrapper>();
+            List<Mensaje> lista = new ArrayList<Mensaje>();
             for (Mensaje m : listamails)
             {
-                MensajeWrapper mw = new MensajeWrapper(m);
-                lista.add(mw);
+
+                lista.add(m);
             }
-            return new ResponseEntity<List<MensajeWrapper>>(lista, HttpStatus.OK);
+            return new ResponseEntity<List<Mensaje>>(lista, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<MensajeWrapper>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<Mensaje>>(HttpStatus.NO_CONTENT);
         }
         //BROWSER localhost:8080/api/recibidos/2
     }
 
     //MENSAJES ENVIADOS POR X USUARIO
     @RequestMapping(value = "/enviados/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<List<MensajeWrapper>> mensajesEnviadosPor(@PathVariable("id") int idUsuario) {
-        List<Mensaje> listamails = serviceMensaje.msjeEnviadosXusuarioService(idUsuario);
+    public @ResponseBody ResponseEntity<List<Mensaje>> mensajesEnviadosPor(@PathVariable("id") int idUsuario) {
+        List<Mensaje> listamails = getServiceMensaje().msjeEnviadosXusuarioService(idUsuario);
         if (listamails.size() > 0) {
-            List<MensajeWrapper> lista = new ArrayList<MensajeWrapper>();
+            List<Mensaje> lista = new ArrayList<Mensaje>();
             for (Mensaje m : listamails)
             {
-                MensajeWrapper mw = new MensajeWrapper(m);
-                lista.add(mw);
+
+                lista.add(m);
             }
-            return new ResponseEntity<List<MensajeWrapper>>(lista, HttpStatus.OK);
+            return new ResponseEntity<List<Mensaje>>(lista, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<MensajeWrapper>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<Mensaje>>(HttpStatus.NO_CONTENT);
         }
         //BROWSER localhost:8080/api/enviados/2
     }
 
     //MENSAJES RECIBIDOS ELIMINADOS POR USUARIO X
     @RequestMapping(value = "/recibidos_eliminados/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<List<MensajeWrapper>> recibidos_eliminados_user(@PathVariable("id") int idUsuario) {
-        List<Mensaje> listamails = serviceMensaje.msjRecibidosBorradosService(idUsuario);
+    public @ResponseBody ResponseEntity<List<Mensaje>> recibidos_eliminados_user(@PathVariable("id") int idUsuario) {
+        List<Mensaje> listamails = getServiceMensaje().msjRecibidosBorradosService(idUsuario);
         if (listamails.size() > 0) {
-            List<MensajeWrapper> lista = new ArrayList<MensajeWrapper>();
+            List<Mensaje> lista = new ArrayList<Mensaje>();
             for (Mensaje m : listamails)
             {
-                MensajeWrapper mw = new MensajeWrapper(m);
-                lista.add(mw);
+
+                lista.add(m);
             }
-            return new ResponseEntity<List<MensajeWrapper>>(lista, HttpStatus.OK);
+            return new ResponseEntity<List<Mensaje>>(lista, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<MensajeWrapper>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<Mensaje>>(HttpStatus.NO_CONTENT);
         }
         //BROWSER http://localhost:8080/api/recibidos_eliminados/3
     }
 
     //MENSAJES ENVIADOS ELIMINADOS POR USUARIO X
     @RequestMapping(value = "/enviados_eliminados/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<List<MensajeWrapper>> enviados_eliminados_user(@PathVariable("id") int idUsuario) {
-        List<Mensaje> listamails = serviceMensaje.msjEnviadosBorradosService(idUsuario);
+    public @ResponseBody ResponseEntity<List<Mensaje>> enviados_eliminados_user(@PathVariable("id") int idUsuario) {
+        List<Mensaje> listamails = getServiceMensaje().msjEnviadosBorradosService(idUsuario);
         try {
             if (listamails.size() > 0) {
-                List<MensajeWrapper> lista = new ArrayList<MensajeWrapper>();
+                List<Mensaje> lista = new ArrayList<Mensaje>();
                 for (Mensaje m : listamails)
                 {
-                    MensajeWrapper mw = new MensajeWrapper(m);
-                    lista.add(mw);
+
+                    lista.add(m);
                 }
-                return new ResponseEntity<List<MensajeWrapper>>(lista, HttpStatus.OK);
+                return new ResponseEntity<List<Mensaje>>(lista, HttpStatus.OK);
             } else {
-                return new ResponseEntity<List<MensajeWrapper>>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<List<Mensaje>>(HttpStatus.NO_CONTENT);
             }
         }
         catch (Exception e)
@@ -150,7 +151,7 @@ public class controlaMensajes {
         @RequestMapping(value = "/eliminar_mensaje_recibido", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity eliminarMensajeRecibido(@RequestParam("id_usuario") int idu, @RequestParam ("id_mensaje") int idm) {
         try {
-            serviceMensaje.borrarMensajeRecibidoService(idu,idm);
+            getServiceMensaje().borrarMensajeRecibidoService(idu,idm);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -162,11 +163,19 @@ public class controlaMensajes {
     @RequestMapping(value = "/eliminar_mensaje_enviado", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity eliminarMensajeEnviado(@RequestParam("id_usuario") int idu, @RequestParam ("id_mensaje") int idm) {
         try {
-            serviceMensaje.borrarMensajeEnviadoService(idu,idm);
+            getServiceMensaje().borrarMensajeEnviadoService(idu,idm);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         //BROWSER localhost:8080/api/eliminar_mensaje_enviado?id_usuario=3&id_mensaje=4
+    }
+
+    public ServiceMensaje getServiceMensaje() {
+        return serviceMensaje;
+    }
+
+    public void setServiceMensaje(ServiceMensaje serviceMensaje) {
+        this.serviceMensaje = serviceMensaje;
     }
 }
