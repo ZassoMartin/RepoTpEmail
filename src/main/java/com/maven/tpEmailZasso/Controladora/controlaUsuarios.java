@@ -23,7 +23,7 @@ public class controlaUsuarios {
     ServiceUsuario serviceEmail;
 
     //TRAIGO TODOS LOS USUARIOS Y LOS MUESTRO
-    @RequestMapping(value = "/Listar_Users/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/Usuario/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<List<Usuario>> getALL() {
 
@@ -37,7 +37,7 @@ public class controlaUsuarios {
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //BROWSER http://localhost:8080/api/Listar_Users/
+        //BROWSER http://localhost:8080/api/Usuario/
     }
 
     //TRAIGO USUARIOS POR NOMBRE

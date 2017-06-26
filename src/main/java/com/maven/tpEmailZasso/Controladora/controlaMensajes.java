@@ -27,7 +27,7 @@ public class controlaMensajes {
 
 
     //TRAIGO TODOS LOS MENSAJES Y LOS MUESTRO
-    @RequestMapping(value = "/listar_todos_mensajes/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/mensajes/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<List<Mensaje>> getALLMessages() {
 
@@ -41,11 +41,11 @@ public class controlaMensajes {
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //BROWSER http://localhost:8080/api/listar_todos_mensajes/
+        //BROWSER http://localhost:8080/api/mensajes/
     }
 
     //ENVIO DE MAILS
-    @RequestMapping(value = "/enviar_mail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/mensajes", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity nuevoMensaje(@RequestBody MensajeRequest request) {
         try {
             getServiceMensaje().mandarMailService(request.getUserIdFrom(),request.getUserIdTo(),request.getRemitente(),request.getRecipiente(),request.getAsunto(),request.getCuerpo());
@@ -54,7 +54,7 @@ public class controlaMensajes {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         /*
-            BROWSER localhost:8080/api/enviar_mail
+            BROWSER localhost:8080/api/mensajes
            {
                 "userIdFrom": 1,
                 "userIdTo": 2,
